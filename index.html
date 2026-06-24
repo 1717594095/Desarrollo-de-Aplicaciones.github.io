@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Monitoreo y Gestión de Seguridad Ciudadana</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --navy:   #0D1B2A;
+            --steel:  #1B4F72;
+            --amber:  #F5A623;
+            --silver: #E8EDF2;
+            --white:  #FFFFFF;
+            --text:   #1A2535;
+            --muted:  #5A6A7E;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: var(--navy);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,.45);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .9rem 0;
+        }
+
+        .brand-icon {
+            width: 36px; height: 36px;
+            background: var(--amber);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        header h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(.85rem, 2vw, 1.05rem);
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: .04em;
+            line-height: 1.2;
+        }
+
+        /* ── NAV ── */
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: .25rem;
+        }
+
+        nav a {
+            display: block;
+            padding: .55rem 1rem;
+            color: var(--silver);
+            text-decoration: none;
+            font-size: .85rem;
+            font-weight: 500;
+            letter-spacing: .03em;
+            border-radius: 4px;
+            transition: background .2s, color .2s;
+        }
+
+        nav a:hover, nav a:focus {
+            background: var(--steel);
+            color: var(--white);
+            outline: none;
+        }
+
+        /* ── HERO (Inicio) ── */
+        #inicio {
+            background: linear-gradient(135deg, var(--navy) 0%, #163356 60%, var(--steel) 100%);
+            color: var(--white);
+            padding: 6rem 2rem 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #inicio::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            background: rgba(245,166,35,.15);
+            border: 1px solid var(--amber);
+            border-radius: 2rem;
+            padding: .35rem 1rem;
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .08em;
+            color: var(--amber);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .live-dot {
+            width: 8px; height: 8px;
+            background: var(--amber);
+            border-radius: 50%;
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: .4; transform: scale(1.5); }
+        }
+
+        #inicio h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            max-width: 800px;
+            margin: 0 auto 1.2rem;
+            letter-spacing: .02em;
+        }
+
+        #inicio p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,.75);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--amber);
+            color: var(--navy);
+            padding: .75rem 2rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .04em;
+            text-decoration: none;
+            transition: opacity .2s, transform .2s;
+        }
+
+        .btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+
+        /* ── SHARED SECTION STYLES ── */
+        .section-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--steel);
+            border-left: 3px solid var(--amber);
+            padding-left: .6rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── QUIÉNES SOMOS ── */
+        #quienes { background: var(--silver); }
+
+        .quienes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .quienes-img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 12px 40px rgba(13,27,42,.18);
+            display: block;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+        }
+
+        .img-placeholder {
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--steel) 0%, var(--navy) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+            box-shadow: 0 12px 40px rgba(13,27,42,.18);
+        }
+
+        .img-placeholder svg { opacity: .5; }
+
+        .img-placeholder span {
+            font-size: .75rem;
+            color: rgba(255,255,255,.5);
+            letter-spacing: .06em;
+        }
+
+        .quienes-text p { color: var(--muted); margin-bottom: 1rem; }
+
+        /* ── SERVICIOS ── */
+        #servicios { background: var(--white); }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: var(--silver);
+            border-radius: 8px;
+            padding: 1.8rem 1.5rem;
+            border-top: 3px solid var(--amber);
+            transition: box-shadow .2s, transform .2s;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 8px 30px rgba(13,27,42,.12);
+            transform: translateY(-3px);
+        }
+
+        .service-card .icon { font-size: 1.8rem; margin-bottom: .75rem; }
+
+        .service-card h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: .5rem;
+        }
+
+        .service-card p { font-size: .88rem; color: var(--muted); }
+
+        .services-list {
+            list-style: none;
+            margin-top: 2.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: .75rem;
+        }
+
+        .services-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: .75rem;
+            background: var(--silver);
+            padding: .9rem 1.1rem;
+            border-radius: 6px;
+            font-size: .9rem;
+            color: var(--text);
+        }
+
+        .services-list li::before {
+            content: '▸';
+            color: var(--amber);
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: .05rem;
+        }
+
+        /* ── VIDEO ── */
+        #video-section {
+            background: var(--navy);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        #video-section .section-label { color: var(--amber); }
+        #video-section .section-title { color: var(--white); }
+
+        .video-wrapper {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,.5);
+            aspect-ratio: 16/9;
+        }
+
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* ── CONTACTO + ASIDE ── */
+        #contacto { background: var(--silver); }
+
+        .contact-aside-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .contact-items { display: flex; flex-direction: column; gap: 1.2rem; margin-top: .5rem; }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: var(--white);
+            padding: 1.1rem 1.4rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        .contact-item .ci-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: .1rem;
+        }
+
+        .contact-item strong {
+            display: block;
+            font-size: .75rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .15rem;
+        }
+
+        .contact-item a { color: var(--steel); text-decoration: none; }
+        .contact-item a:hover { text-decoration: underline; }
+
+        .social-links {
+            display: flex;
+            gap: .75rem;
+            flex-wrap: wrap;
+            margin-top: .3rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .45rem .9rem;
+            border-radius: 4px;
+            font-size: .8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity .2s;
+        }
+
+        .social-link:hover { opacity: .8; }
+        .social-link.fb  { background: #1877F2; color: #fff; }
+        .social-link.tw  { background: #1DA1F2; color: #fff; }
+        .social-link.yt  { background: #FF0000; color: #fff; }
+
+        /* ── ASIDE ── */
+        aside {
+            background: var(--navy);
+            color: var(--white);
+            border-radius: 10px;
+            padding: 2rem 1.6rem;
+            position: sticky;
+            top: 80px;
+        }
+
+        aside h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--amber);
+            margin-bottom: 1.2rem;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+
+        .aside-block { margin-bottom: 1.6rem; }
+
+        .aside-block h4 {
+            font-size: .7rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.45);
+            margin-bottom: .6rem;
+        }
+
+        .aside-block p, .aside-block li {
+            font-size: .85rem;
+            color: rgba(255,255,255,.8);
+            line-height: 1.6;
+        }
+
+        .aside-block ul { list-style: none; }
+
+        .aside-block ul li {
+            padding: .3rem 0;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .aside-block ul li:last-child { border-bottom: none; }
+
+        .aside-block ul li span { color: var(--amber); font-weight: 600; font-size: .8rem; }
+
+        .emergency-btn {
+            display: block;
+            background: #C0392B;
+            color: var(--white);
+            text-align: center;
+            padding: .8rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .06em;
+            text-decoration: none;
+            transition: opacity .2s;
+            margin-top: .5rem;
+        }
+
+        .emergency-btn:hover { opacity: .88; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: #07111C;
+            color: rgba(255,255,255,.55);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            font-size: .82rem;
+            line-height: 1.8;
+        }
+
+        footer strong { color: rgba(255,255,255,.85); }
+
+        footer .footer-divider {
+            width: 40px;
+            height: 2px;
+            background: var(--amber);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 800px) {
+            header { flex-direction: column; align-items: flex-start; padding: .75rem 1.25rem; }
+            nav ul { flex-wrap: wrap; }
+            .quienes-grid,
+            .contact-aside-grid { grid-template-columns: 1fr; }
+            aside { position: static; }
+        }
+
+        @media (max-width: 480px) {
+            .section-wrap { padding: 3.5rem 1.25rem; }
+            #inicio { padding: 4rem 1.25rem 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════ HEADER ═══════════════ -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon">🛡️</div>
+            <h1>Sistema de Monitoreo y Gestión<br>de Seguridad Ciudadana</h1>
+        </div>
+        <nav aria-label="Menú principal">
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#quienes">Quiénes Somos</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ═══════════════ MAIN ═══════════════ -->
+    <main>
+
+        <!-- INICIO -->
+        <section id="inicio" aria-labelledby="inicio-heading">
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                Sistema operativo · En línea
+            </div>
+            <h2 id="inicio-heading">Plataforma Integrada de Seguridad Ciudadana</h2>
+            <p>Administración de incidencias, control de personal y optimización de recursos logísticos en tiempo real para una gestión policial moderna y efectiva.</p>
+            <a href="#servicios" class="btn-primary">Ver Servicios →</a>
+        </section>
+
+        <!-- QUIÉNES SOMOS -->
+        <section id="quienes" aria-labelledby="quienes-heading">
+            <div class="section-wrap">
+                <div class="quienes-grid">
+
+                    <!-- 
+                        IMAGEN: Reemplaza este bloque por tu imagen real así:
+                        <img src="images/tu-foto.jpg"
+                             alt="Centro de monitoreo de seguridad ciudadana"
+                             class="quienes-img">
+                    -->
+                    <div class="img-placeholder" role="img" aria-label="Centro de monitoreo de seguridad ciudadana">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="28" stroke="white" stroke-width="2"/>
+                            <path d="M20 32 L28 40 L44 24" stroke="#F5A623" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="32" cy="32" r="14" stroke="white" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        </svg>
+                        <span>CENTRO DE MONITOREO</span>
+                    </div>
+
+                    <div class="quienes-text">
+                        <span class="section-label">Quiénes Somos</span>
+                        <h2 class="section-title" id="quienes-heading">Un sistema al servicio de la comunidad</h2>
+                        <p>El <strong>Sistema de Monitoreo y Gestión de Seguridad Ciudadana</strong> es una plataforma web desarrollada para optimizar la operación policial y fortalecer la relación entre las instituciones de seguridad y la ciudadanía. Surge como respuesta a la necesidad de contar con herramientas tecnológicas modernas que permitan registrar, gestionar y analizar incidencias de manera ágil, precisa y centralizada.</p>
+                        <p>A través de esta plataforma, el personal operativo puede reportar novedades en tiempo real, mientras que los mandos superiores disponen de tableros de control que facilitan la toma de decisiones estratégicas. El sistema integra módulos de control de asistencia, asignación de patrullajes, administración de recursos logísticos y generación de estadísticas delictivas por sector.</p>
+                        <p>Desarrollado bajo los más altos estándares de seguridad informática, garantiza la confidencialidad de la información y la trazabilidad de cada acción registrada. Nuestro objetivo es contribuir a una gestión policial más eficiente, transparente y orientada al bienestar de la comunidad.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICIOS -->
+        <section id="servicios" aria-labelledby="servicios-heading">
+            <div class="section-wrap">
+                <span class="section-label">Servicios</span>
+                <h2 class="section-title" id="servicios-heading">Módulos y Funcionalidades</h2>
+
+                <div class="services-grid">
+                    <article class="service-card">
+                        <div class="icon">📋</div>
+                        <h3>Gestión de Incidencias</h3>
+                        <p>Registro, seguimiento y cierre de incidentes con geolocalización y asignación automática de unidades.</p>
+                    </article>
+                    <article class="service-card">
+                        <div class="icon">👮</div>
+                        <h3>Control de Personal</h3>
+                        <p>Asistencia, turnos, patrullajes y novedades del personal operativo y administrativo.</p>
+                    </article>
+                    <article class="service-card">
+                        <div class="icon">📊</div>
+                        <h3>Estadísticas Delictivas</h3>
+                        <p>Análisis por zona, tipo de delito y período temporal para apoyar decisiones estratégicas.</p>
+                    </article>
+                    <article class="service-card">
+                        <div class="icon">🚔</div>
+                        <h3>Recursos Logísticos</h3>
+                        <p>Inventario de vehículos, armamento y equipamiento con alertas de mantenimiento.</p>
+                    </article>
+                </div>
+
+                <ul class="services-list">
+                    <li>Registro digital de partes e informes policiales</li>
+                    <li>Módulo de despacho y coordinación de unidades</li>
+                    <li>Alertas tempranas y notificaciones en tiempo real</li>
+                    <li>Panel de administración para mandos superiores</li>
+                    <li>Integración con cámaras de videovigilancia</li>
+                    <li>Generación automática de reportes en PDF</li>
+                    <li>Acceso móvil para personal en campo</li>
+                    <li>Historial de incidencias por ciudadano o dirección</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- VIDEO -->
+        <section id="video-section" aria-labelledby="video-heading">
+            <span class="section-label">Video informativo</span>
+            <h2 class="section-title" id="video-heading">Seguridad Ciudadana en la Era Digital</h2>
+            <p style="color:rgba(255,255,255,.65);max-width:560px;margin:.5rem auto 0;font-size:.95rem;">
+                Cómo las plataformas tecnológicas están transformando la gestión policial moderna.
+            </p>
+            <div class="video-wrapper">
+                <!-- 
+                    Para cambiar el video: reemplaza el ID después de "embed/"
+                    por el ID de tu video de YouTube preferido.
+                -->
+                <iframe
+                    src="https://www.youtube.com/embed/4w5gUxQ5rQM"
+                    title="Seguridad ciudadana y tecnología"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+
+        <!-- CONTACTO + ASIDE -->
+        <section id="contacto" aria-labelledby="contacto-heading">
+            <div class="section-wrap">
+                <div class="contact-aside-grid">
+
+                    <div>
+                        <span class="section-label">Contacto</span>
+                        <h2 class="section-title" id="contacto-heading">Comuníquese con Nosotros</h2>
+
+                        <div class="contact-items">
+
+                            <div class="contact-item">
+                                <span class="ci-icon">✉️</span>
+                                <div>
+                                    <strong>Correo Electrónico</strong>
+                                    <a href="mailto:csalgado@seguridad.gob.ec">csalgado@seguridad.gob.ec</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <span class="ci-icon">📞</span>
+                                <div>
+                                    <strong>Teléfono / Emergencias</strong>
+                                    <a href="tel:+593999000000">+593 99 900 0000</a>
+                                    &nbsp;|&nbsp; <a href="tel:101">Emergencias: 101</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <span class="ci-icon">📍</span>
+                                <div>
+                                    <strong>Dirección</strong>
+                                    Av. de la Prensa N54-123 y Calle Pública,<br>
+                                    Cayambe, Pichincha, Ecuador
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <span class="ci-icon">🌐</span>
+                                <div>
+                                    <strong>Redes Sociales</strong>
+                                    <div class="social-links">
+                                        <a href="https://facebook.com" class="social-link fb" target="_blank" rel="noopener">📘 Facebook</a>
+                                        <a href="https://twitter.com" class="social-link tw" target="_blank" rel="noopener">🐦 Twitter / X</a>
+                                        <a href="https://youtube.com" class="social-link yt" target="_blank" rel="noopener">▶ YouTube</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <aside aria-label="Información adicional">
+                        <h3>🕐 Información Operativa</h3>
+
+                        <div class="aside-block">
+                            <h4>Horarios de Atención</h4>
+                            <ul>
+                                <li>Lun – Vie <span>08:00 – 17:00</span></li>
+                                <li>Sábados <span>08:00 – 13:00</span></li>
+                                <li>Emergencias <span>24 / 7</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="aside-block">
+                            <h4>Líneas de Emergencia</h4>
+                            <ul>
+                                <li>Policía Nacional <span>101</span></li>
+                                <li>Bomberos <span>102</span></li>
+                                <li>Cruz Roja <span>131</span></li>
+                                <li>ECU 911 <span>911</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="aside-block">
+                            <h4>Aviso Importante</h4>
+                            <p>Para reportar una emergencia activa, llame al <strong style="color:var(--amber)">ECU 911</strong>. No envíe reportes de emergencias por correo electrónico.</p>
+                        </div>
+
+                        <a href="tel:911" class="emergency-btn">🚨 Marcar ECU 911</a>
+                    </aside>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer>
+        <div class="footer-divider"></div>
+        <p>
+            <strong>Cptn. Carlos Salgado Vélez</strong><br>
+            Proyecto de Asignatura · Desarrollo Web<br>
+            Sistema de Monitoreo y Gestión de Seguridad Ciudadana · © 2025
+        </p>
+    </footer>
+
+</body>
+</html>
