@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Monitoreo y Gestión de Seguridad Ciudadana</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,6 +45,7 @@
             justify-content: space-between;
             gap: 1rem;
             box-shadow: 0 2px 12px rgba(0,0,0,.45);
+            flex-wrap: wrap;
         }
 
         .brand {
@@ -74,8 +77,7 @@
             list-style: none;
             display: flex;
             gap: .25rem;
-            margin-bottom: 0;
-            padding-left: 0;
+            flex-wrap: wrap;
         }
 
         nav a {
@@ -276,7 +278,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: .75rem;
-            padding-left: 0;
         }
 
         .services-list li {
@@ -324,21 +325,94 @@
             display: block;
         }
 
-        /* ── PANEL DINÁMICO DE INCIDENCIAS ── */
-        #registro-incidencias {
-            background: var(--white);
+        /* ── REGISTRO DE INCIDENCIAS (SECCIÓN DINÁMICA) ── */
+        #incidencias { background: var(--silver); }
+
+        .incidencias-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 2.5rem;
+            align-items: flex-start;
         }
-        .counter-badge {
-            background-color: var(--steel);
+
+        .form-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.8rem;
+            box-shadow: 0 8px 30px rgba(13,27,42,.1);
+            border-top: 3px solid var(--amber);
+        }
+
+        .form-card label {
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--navy);
+            letter-spacing: .03em;
+        }
+
+        #alertaValidacion { margin-top: 1rem; }
+
+        .resumen-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--navy);
             color: var(--white);
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
+            border-radius: 8px;
+            padding: .9rem 1.3rem;
+            margin-bottom: 1.2rem;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: .03em;
+        }
+
+        .resumen-bar .badge-total {
+            background: var(--amber);
+            color: var(--navy);
+            font-size: 1rem;
+            font-weight: 700;
+            padding: .35rem .9rem;
+            border-radius: 2rem;
+        }
+
+        #listaIncidencias { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
+
+        .incidencia-item {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: 0 2px 10px rgba(13,27,42,.07);
+            border-left: 4px solid var(--steel);
+        }
+
+        .incidencia-info strong {
+            display: block;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.05rem;
+            color: var(--navy);
+        }
+
+        .incidencia-info p {
+            font-size: .85rem;
+            color: var(--muted);
+            margin: .2rem 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--muted);
+            font-size: .9rem;
+            padding: 2rem 1rem;
+            background: rgba(255,255,255,.5);
+            border-radius: 8px;
+            border: 1px dashed #b9c3cf;
         }
 
         /* ── CONTACTO + ASIDE ── */
-        #contacto { background: var(--silver); }
+        #contacto { background: var(--white); }
 
         .contact-aside-grid {
             display: grid;
@@ -353,7 +427,7 @@
             display: flex;
             gap: 1rem;
             align-items: flex-start;
-            background: var(--white);
+            background: var(--silver);
             padding: 1.1rem 1.4rem;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,.06);
@@ -437,7 +511,7 @@
             line-height: 1.6;
         }
 
-        .aside-block ul { list-style: none; padding-left: 0; }
+        .aside-block ul { list-style: none; }
 
         .aside-block ul li {
             padding: .3rem 0;
@@ -488,6 +562,10 @@
         }
 
         /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .incidencias-grid { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 800px) {
             header { flex-direction: column; align-items: flex-start; padding: .75rem 1.25rem; }
             nav ul { flex-wrap: wrap; }
@@ -499,11 +577,13 @@
         @media (max-width: 480px) {
             .section-wrap { padding: 3.5rem 1.25rem; }
             #inicio { padding: 4rem 1.25rem 3.5rem; }
+            .incidencia-item { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
+    <!-- ═══════════════ HEADER ═══════════════ -->
     <header>
         <div class="brand">
             <div class="brand-icon">🛡️</div>
@@ -514,14 +594,16 @@
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#quienes">Quiénes Somos</a></li>
                 <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#registro-incidencias">Incidencias</a></li>
+                <li><a href="#incidencias">Registro de Incidencias</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
         </nav>
     </header>
 
+    <!-- ═══════════════ MAIN ═══════════════ -->
     <main>
 
+        <!-- INICIO -->
         <section id="inicio" aria-labelledby="inicio-heading">
             <div class="live-badge">
                 <span class="live-dot"></span>
@@ -532,9 +614,11 @@
             <a href="#servicios" class="btn-primary-custom">Ver Servicios →</a>
         </section>
 
+        <!-- QUIÉNES SOMOS -->
         <section id="quienes" aria-labelledby="quienes-heading">
             <div class="section-wrap">
                 <div class="quienes-grid">
+
                     <div class="img-placeholder" role="img" aria-label="Centro de monitoreo de seguridad ciudadana">
                         <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="32" cy="32" r="28" stroke="white" stroke-width="2"/>
@@ -548,13 +632,15 @@
                         <span class="section-label">Quiénes Somos</span>
                         <h2 class="section-title" id="quienes-heading">Un sistema al servicio de la comunidad</h2>
                         <p>El <strong>Sistema de Monitoreo y Gestión de Seguridad Ciudadana</strong> es una plataforma web desarrollada para optimizar la operación policial y fortalecer la relación entre las instituciones de seguridad y la ciudadanía. Surge como respuesta a la necesidad de contar con herramientas tecnológicas modernas que permitan registrar, gestionar y analizar incidencias de manera ágil, precisa y centralizada.</p>
-                        <p>A través de esta plataforma, el personal operativo puede reportar novedades en tiempo real, mientras que los mandos superiores disponen de tableros de control que facilitan la toma de decisiones estratégicas.</p>
-                        <p>Desarrollado bajo los más altos estándares de seguridad informática, garantiza la confidencialidad de la información y la trazabilidad de cada acción registrada.</p>
+                        <p>A través de esta plataforma, el personal operativo puede reportar novedades en tiempo real, mientras que los mandos superiores disponen de tableros de control que facilitan la toma de decisiones estratégicas. El sistema integra módulos de control de asistencia, asignación de patrullajes, administración de recursos logísticos y generación de estadísticas delictivas por sector.</p>
+                        <p>Desarrollado bajo los más altos estándares de seguridad informática, garantiza la confidencialidad de la información y la trazabilidad de cada acción registrada. Nuestro objetivo es contribuir a una gestión policial más eficiente, transparente y orientada al bienestar de la comunidad.</p>
                     </div>
+
                 </div>
             </div>
         </section>
 
+        <!-- SERVICIOS -->
         <section id="servicios" aria-labelledby="servicios-heading">
             <div class="section-wrap">
                 <span class="section-label">Servicios</span>
@@ -596,6 +682,7 @@
             </div>
         </section>
 
+        <!-- VIDEO -->
         <section id="video-section" aria-labelledby="video-heading">
             <span class="section-label">Video informativo</span>
             <h2 class="section-title" id="video-heading">Seguridad Ciudadana en la Era Digital</h2>
@@ -612,67 +699,80 @@
             </div>
         </section>
 
-        <section id="registro-incidencias" aria-labelledby="registro-heading">
+        <!-- ═══════════════ SECCIÓN DINÁMICA: REGISTRO DE INCIDENCIAS ═══════════════ -->
+        <section id="incidencias" aria-labelledby="incidencias-heading">
             <div class="section-wrap">
-                <span class="section-label">Panel Operativo</span>
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                    <h2 class="section-title mb-0" id="registro-heading">Registro de Incidencias en Tiempo Real</h2>
-                    <div>
-                        <span class="counter-badge">Total Reportes: <span id="total-registros">0</span></span>
-                    </div>
-                </div>
+                <span class="section-label">Sección dinámica</span>
+                <h2 class="section-title" id="incidencias-heading">Registro de Incidencias en Tiempo Real</h2>
+                <p style="color:var(--muted); max-width:700px; margin-bottom:2rem;">
+                    Use el siguiente formulario para registrar una nueva incidencia. Los registros se generan
+                    dinámicamente con JavaScript y pueden eliminarse en cualquier momento.
+                </p>
 
-                <div class="row g-4">
-                    <div class="col-lg-5">
-                        <div class="card shadow-sm border-0 p-4 bg-light">
-                            <h4 class="h5 text-dark fw-bold mb-3">Nuevo Reporte de Novedad</h4>
-                            
-                            <div id="validation-message"></div>
+                <div class="incidencias-grid">
 
-                            <form id="incident-form">
-                                <div class="mb-3">
-                                    <label for="input-name" class="form-label small fw-bold text-secondary">Nombre del Oficial / Reportante</label>
-                                    <input type="text" class="form-control" id="input-name" placeholder="Ej. Cptn. Carlos Salgado">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="select-category" class="form-label small fw-bold text-secondary">Categoría o Tipo</label>
-                                    <select class="form-select" id="select-category">
-                                        <option value="" selected disabled>Seleccione una opción...</option>
-                                        <option value="Robo / Hurto">Robo / Hurto</option>
-                                        <option value="Alteración del Orden públicos">Alteración del Orden</option>
-                                        <option value="Accidente de Tránsito">Accidente de Tránsito</option>
-                                        <option value="Sospecha / Prevención">Sospecha / Prevención</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="textarea-description" class="form-label small fw-bold text-secondary">Descripción detallada</label>
-                                    <textarea class="form-control" id="textarea-description" rows="3" placeholder="Detalles de la ubicación, vehículos o personas involucradas..."></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary-custom w-100">Registrar Incidencia</button>
-                            </form>
-                        </div>
-                    </div>
+                    <!-- FORMULARIO -->
+                    <div class="form-card">
+                        <h3 style="font-family:'Rajdhani',sans-serif; color:var(--navy); margin-bottom:1rem;">Nueva Incidencia</h3>
 
-                    <div class="col-lg-7">
-                        <h4 class="h5 text-dark fw-bold mb-3">Bitácora de Eventos Activos en el Turno</h4>
-                        <div id="incidents-container" class="row row-cols-1 g-3">
-                            <div id="empty-state" class="text-center text-muted my-5">
-                                <p class="mb-0">No hay incidencias registradas actualmente.</p>
+                        <form id="formIncidencia" novalidate>
+                            <div class="mb-3">
+                                <label for="nombreIncidencia" class="form-label">Nombre de la incidencia</label>
+                                <input type="text" class="form-control" id="nombreIncidencia" placeholder="Ej. Robo a domicilio" autocomplete="off">
                             </div>
-                        </div>
+
+                            <div class="mb-3">
+                                <label for="descripcionIncidencia" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcionIncidencia" rows="3" placeholder="Detalle breve de lo ocurrido"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="categoriaIncidencia" class="form-label">Categoría</label>
+                                <select class="form-select" id="categoriaIncidencia">
+                                    <option value="">Seleccione una categoría...</option>
+                                    <option value="Robo">Robo</option>
+                                    <option value="Accidente de tránsito">Accidente de tránsito</option>
+                                    <option value="Violencia">Violencia</option>
+                                    <option value="Disturbio">Disturbio</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary-custom w-100">➕ Registrar Incidencia</button>
+
+                            <div id="alertaValidacion"></div>
+                        </form>
                     </div>
+
+                    <!-- LISTADO DINÁMICO -->
+                    <div>
+                        <div class="resumen-bar">
+                            <span>Total de incidencias registradas</span>
+                            <span class="badge-total" id="totalIncidencias">0</span>
+                        </div>
+
+                        <ul id="listaIncidencias">
+                            <li class="empty-state" id="estadoVacio">
+                                No hay incidencias registradas todavía. Use el formulario para agregar la primera.
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </section>
 
+        <!-- CONTACTO + ASIDE -->
         <section id="contacto" aria-labelledby="contacto-heading">
             <div class="section-wrap">
                 <div class="contact-aside-grid">
+
                     <div>
                         <span class="section-label">Contacto</span>
                         <h2 class="section-title" id="contacto-heading">Comuníquese con Nosotros</h2>
 
                         <div class="contact-items">
+
                             <div class="contact-item">
                                 <span class="ci-icon">✉️</span>
                                 <div>
@@ -694,7 +794,7 @@
                                 <span class="ci-icon">📍</span>
                                 <div>
                                     <strong>Dirección</strong>
-                                    Av. Metropolitana y Calle Alfredo San Andres,<br>
+                                    Av. Metropolitana y Calle Alfredo San Andrés,<br>
                                     Montecristi, Manabí, Ecuador
                                 </div>
                             </div>
@@ -710,11 +810,13 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
                     <aside aria-label="Información adicional">
                         <h3>🕐 Información Operativa</h3>
+
                         <div class="aside-block">
                             <h4>Horarios de Atención</h4>
                             <ul>
@@ -741,12 +843,14 @@
 
                         <a href="tel:911" class="emergency-btn">🚨 Marcar ECU 911</a>
                     </aside>
+
                 </div>
             </div>
         </section>
 
     </main>
 
+    <!-- ═══════════════ FOOTER ═══════════════ -->
     <footer>
         <div class="footer-divider"></div>
         <p>
@@ -756,6 +860,10 @@
         </p>
     </footer>
 
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script externo enlazado al final del documento -->
     <script src="script.js"></script>
 </body>
 </html>
