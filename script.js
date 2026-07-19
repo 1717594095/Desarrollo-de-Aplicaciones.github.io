@@ -1,230 +1,222 @@
-// ============================================================
-// script.js
-// Sistema de Monitoreo y Gestión de Seguridad Ciudadana
-// Módulo: Registro dinámico de incidencias con validaciones
-// ============================================================
+/* ============================================================
+   script.js
+   Lógica interactiva y simulación de base de datos en memoria
+   Se conserva la validación dinámica y el renderizado original;
+   se adapta la presentación a componentes de Bootstrap 5
+   (tabla, modales de detalle/confirmación y spinner de carga).
+   ============================================================ */
 
-// Contador global de registros creados
-let totalRegistros = 0;
+// 1. Arreglo inicial de incidencias en memoria (Simula la Base de Datos)
+let incidencias = [
+    {
+        id: 17180291,
+        nombre: "Robo de accesorios de vehículo",
+        descripcion: "Sujeto desconocido sustrae los espejos retrovisores de un vehículo estacionado en la vía pública.",
+        categoria: "Robo"
+    }
+];
 
-// Reglas mínimas de validación (fáciles de ajustar si cambian los requisitos)
-const LONGITUD_MIN_NOMBRE = 5;
-const LONGITUD_MIN_DESCRIPCION = 15;
+// Guarda el id pendiente de eliminación mientras se confirma en el modal
+let idPendienteEliminar = null;
 
-document.addEventListener('DOMContentLoaded', function () {
+// 2. Selectores de elementos del DOM
+const form = document.getElementById('formIncidencia');
+const inputNombre = document.getElementById('nombreIncidencia');
+const inputDesc = document.getElementById('descripcionIncidencia');
+const selectCat = document.getElementById('categoriaIncidencia');
+const btnSubmit = document.getElementById('btnSubmit');
+const spinnerSubmit = document.getElementById('spinnerSubmit');
+const btnSubmitText = document.getElementById('btnSubmitText');
+const listaBody = document.getElementById('listaIncidencias');
+const totalBadge = document.getElementById('totalIncidencias');
+const mensajeEstado = document.getElementById('mensajeEstado');
+const alertaValidacion = document.getElementById('alertaValidacion');
 
-    // ── Referencias a los elementos del DOM ──
-    const formulario = document.getElementById('formIncidencia');
-    const inputNombre = document.getElementById('nombreIncidencia');
-    const inputDescripcion = document.getElementById('descripcionIncidencia');
-    const selectCategoria = document.getElementById('categoriaIncidencia');
+// Elementos del modal de detalle
+const detalleId = document.getElementById('detalleId');
+const detalleNombre = document.getElementById('detalleNombre');
+const detalleCategoria = document.getElementById('detalleCategoria');
+const detalleDescripcion = document.getElementById('detalleDescripcion');
+const modalDetalleEl = document.getElementById('modalDetalle');
+const modalDetalle = new bootstrap.Modal(modalDetalleEl);
 
-    const feedbackNombre = document.getElementById('nombreFeedback');
-    const feedbackDescripcion = document.getElementById('descripcionFeedback');
-    const feedbackCategoria = document.getElementById('categoriaFeedback');
+// Elementos del modal de confirmación de eliminación
+const nombreAEliminar = document.getElementById('nombreAEliminar');
+const modalEliminarEl = document.getElementById('modalEliminar');
+const modalEliminar = new bootstrap.Modal(modalEliminarEl);
+const btnConfirmarEliminar = document.getElementById('btnConfirmarEliminar');
 
-    const listaIncidencias = document.getElementById('listaIncidencias');
-    const estadoVacio = document.getElementById('estadoVacio');
-    const totalIncidenciasSpan = document.getElementById('totalIncidencias');
-    const alertaValidacion = document.getElementById('alertaValidacion');
+// 3. Funciones de Renderizado Dinámico (Equivale a Jinja de Flask)
+function renderListaIncidencias() {
+    listaBody.innerHTML = '';
 
-    // ============================================================
-    // FUNCIONES DE VALIDACIÓN
-    // Cada una revisa un campo y devuelve true/false, además de
-    // marcar el campo (is-valid / is-invalid) y actualizar su mensaje.
-    // ============================================================
+    // Actualizar Contador Global
+    totalBadge.textContent = incidencias.length;
 
-    function validarNombre() {
-        const valor = inputNombre.value.trim();
-
-        if (valor === '') {
-            return marcarInvalido(inputNombre, feedbackNombre, 'El nombre de la incidencia es obligatorio.');
-        }
-        if (valor.length < LONGITUD_MIN_NOMBRE) {
-            return marcarInvalido(inputNombre, feedbackNombre, `Debe tener al menos ${LONGITUD_MIN_NOMBRE} caracteres.`);
-        }
-        return marcarValido(inputNombre, feedbackNombre);
+    // Mensaje Condicional Basado en Datos (alertas Bootstrap)
+    if (incidencias.length === 0) {
+        mensajeEstado.innerHTML = `
+            <div class="alert alert-secondary" role="alert">
+                <i class="bi bi-info-circle me-1"></i> No hay incidencias registradas en el sistema.
+            </div>`;
+        return;
+    } else if (incidencias.length >= 5) {
+        mensajeEstado.innerHTML = `
+            <div class="alert alert-danger" role="alert">
+                <i class="bi bi-exclamation-octagon-fill me-1"></i>
+                Alta concentración de incidencias detectada en el sector.
+            </div>`;
+    } else {
+        mensajeEstado.innerHTML = `
+            <div class="alert alert-success" role="alert">
+                <i class="bi bi-check-circle-fill me-1"></i>
+                Estado del sector dentro de los parámetros normales.
+            </div>`;
     }
 
-    function validarDescripcion() {
-        const valor = inputDescripcion.value.trim();
-
-        if (valor === '') {
-            return marcarInvalido(inputDescripcion, feedbackDescripcion, 'La descripción es obligatoria.');
-        }
-        if (valor.length < LONGITUD_MIN_DESCRIPCION) {
-            return marcarInvalido(inputDescripcion, feedbackDescripcion, `Agregue más detalle (mínimo ${LONGITUD_MIN_DESCRIPCION} caracteres).`);
-        }
-        return marcarValido(inputDescripcion, feedbackDescripcion);
-    }
-
-    function validarCategoria() {
-        const valor = selectCategoria.value.trim();
-
-        if (valor === '') {
-            return marcarInvalido(selectCategoria, feedbackCategoria, 'Seleccione una categoría.');
-        }
-        return marcarValido(selectCategoria, feedbackCategoria);
-    }
-
-    // Revisa los tres campos a la vez (se usa en el submit)
-    function validarFormularioCompleto() {
-        const nombreOk = validarNombre();
-        const descripcionOk = validarDescripcion();
-        const categoriaOk = validarCategoria();
-        return nombreOk && descripcionOk && categoriaOk;
-    }
-
-    // ============================================================
-    // FUNCIONES DE APOYO PARA MARCAR CAMPOS
-    // ============================================================
-
-    function marcarInvalido(campo, elementoFeedback, mensaje) {
-        campo.classList.remove('is-valid');
-        campo.classList.add('is-invalid');
-        elementoFeedback.textContent = mensaje;
-        elementoFeedback.classList.add('d-block');
-        return false;
-    }
-
-    function marcarValido(campo, elementoFeedback) {
-        campo.classList.remove('is-invalid');
-        campo.classList.add('is-valid');
-        elementoFeedback.textContent = '';
-        elementoFeedback.classList.remove('d-block');
-        return true;
-    }
-
-    // Quita las marcas de validación de todos los campos (para cuando se limpia el formulario)
-    function limpiarValidaciones() {
-        [inputNombre, inputDescripcion, selectCategoria].forEach(function (campo) {
-            campo.classList.remove('is-valid', 'is-invalid');
-        });
-        [feedbackNombre, feedbackDescripcion, feedbackCategoria].forEach(function (feedback) {
-            feedback.textContent = '';
-            feedback.classList.remove('d-block');
-        });
-    }
-
-    /**
-     * Muestra un mensaje general de éxito o error encima de la lista de incidencias.
-     */
-    function mostrarAlerta(mensaje, tipo) {
-        alertaValidacion.innerHTML = '';
-
-        const alerta = document.createElement('div');
-        alerta.className = `alert alert-${tipo} mt-3`;
-        alerta.setAttribute('role', 'alert');
-        alerta.textContent = mensaje;
-
-        alertaValidacion.appendChild(alerta);
-
-        setTimeout(function () {
-            alerta.remove();
-        }, 3000);
-    }
-
-    // ============================================================
-    // EVENTOS DE VALIDACIÓN EN TIEMPO REAL
-    // "input" corrige el mensaje mientras la persona escribe,
-    // "blur" valida apenas el usuario sale del campo.
-    // ============================================================
-
-    inputNombre.addEventListener('input', validarNombre);
-    inputNombre.addEventListener('blur', validarNombre);
-
-    inputDescripcion.addEventListener('input', validarDescripcion);
-    inputDescripcion.addEventListener('blur', validarDescripcion);
-
-    selectCategoria.addEventListener('change', validarCategoria);
-    selectCategoria.addEventListener('blur', validarCategoria);
-
-    // ============================================================
-    // EVENTO SUBMIT DEL FORMULARIO
-    // ============================================================
-
-    formulario.addEventListener('submit', function (evento) {
-        evento.preventDefault(); // evita que la página se recargue
-
-        const formularioValido = validarFormularioCompleto();
-
-        if (!formularioValido) {
-            mostrarAlerta('⚠️ Revise los campos marcados en rojo antes de registrar.', 'danger');
-            return;
-        }
-
-        const nombre = inputNombre.value.trim();
-        const descripcion = inputDescripcion.value.trim();
-        const categoria = selectCategoria.value.trim();
-
-        crearIncidencia(nombre, descripcion, categoria);
-        mostrarAlerta('✅ Incidencia registrada correctamente.', 'success');
-
-        formulario.reset();
-        limpiarValidaciones();
-        inputNombre.focus();
+    // Recorrido e Inyección de filas en la tabla Bootstrap
+    incidencias.forEach(inc => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="text-muted small">#${inc.id}</td>
+            <td class="fw-semibold">${inc.nombre}</td>
+            <td><span class="badge bg-secondary">${inc.categoria}</span></td>
+            <td class="text-end">
+                <button class="btn btn-sm btn-outline-primary me-1" title="Ver detalle"
+                        onclick="verDetalleIncidencia(${inc.id})">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" title="Eliminar"
+                        onclick="pedirConfirmacionEliminar(${inc.id})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        `;
+        listaBody.appendChild(tr);
     });
+}
 
-    // ============================================================
-    // CREACIÓN, CONTEO Y ELIMINACIÓN DE INCIDENCIAS
-    // ============================================================
+// 4. Modal de detalle: muestra la información completa de una incidencia
+function verDetalleIncidencia(id) {
+    const inc = incidencias.find(i => i.id === id);
+    if (!inc) return;
 
-    function crearIncidencia(nombre, descripcion, categoria) {
-        if (estadoVacio) {
-            estadoVacio.style.display = 'none';
-        }
+    detalleId.textContent = `#${inc.id}`;
+    detalleNombre.textContent = inc.nombre;
+    detalleCategoria.textContent = inc.categoria;
+    detalleDescripcion.textContent = inc.descripcion;
 
-        const item = document.createElement('li');
-        item.className = 'incidencia-item';
+    modalDetalle.show();
+}
 
-        const info = document.createElement('div');
-        info.className = 'incidencia-info';
+// 5. Modal de confirmación: solicita confirmar antes de eliminar
+function pedirConfirmacionEliminar(id) {
+    const inc = incidencias.find(i => i.id === id);
+    if (!inc) return;
 
-        const titulo = document.createElement('strong');
-        titulo.textContent = nombre;
+    idPendienteEliminar = id;
+    nombreAEliminar.textContent = inc.nombre;
+    modalEliminar.show();
+}
 
-        const parrafoDescripcion = document.createElement('p');
-        parrafoDescripcion.textContent = descripcion;
+btnConfirmarEliminar.addEventListener('click', () => {
+    if (idPendienteEliminar !== null) {
+        incidencias = incidencias.filter(inc => inc.id !== idPendienteEliminar);
+        renderListaIncidencias();
+        idPendienteEliminar = null;
+    }
+    modalEliminar.hide();
+});
 
-        const badgeCategoria = document.createElement('span');
-        badgeCategoria.className = 'badge bg-secondary';
-        badgeCategoria.textContent = categoria;
+// 6. Arquitectura de Validación en Tiempo Real (Mientras escribe y al salir del foco)
+function validarCampo(input) {
+    let esValido = true;
 
-        const fecha = document.createElement('p');
-        const ahora = new Date();
-        fecha.textContent = 'Registrado: ' + ahora.toLocaleString();
-        fecha.style.fontSize = '.75rem';
-
-        info.appendChild(titulo);
-        info.appendChild(parrafoDescripcion);
-        info.appendChild(badgeCategoria);
-        info.appendChild(fecha);
-
-        const botonEliminar = document.createElement('button');
-        botonEliminar.className = 'btn btn-outline-danger btn-sm';
-        botonEliminar.type = 'button';
-        botonEliminar.textContent = '🗑 Eliminar';
-
-        botonEliminar.addEventListener('click', function () {
-            item.remove();
-            actualizarTotal(-1);
-
-            if (listaIncidencias.querySelectorAll('.incidencia-item').length === 0 && estadoVacio) {
-                estadoVacio.style.display = 'block';
-            }
-        });
-
-        item.appendChild(info);
-        item.appendChild(botonEliminar);
-        listaIncidencias.appendChild(item);
-
-        actualizarTotal(1);
+    if (!input.checkValidity()) {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        esValido = false;
+    } else {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
     }
 
-    function actualizarTotal(variacion) {
-        totalRegistros += variacion;
-        if (totalRegistros < 0) totalRegistros = 0;
-        totalIncidenciasSpan.textContent = totalRegistros;
+    verificarFormularioCompleto();
+    return esValido;
+}
+
+function verificarFormularioCompleto() {
+    // Si el formulario nativo es válido, habilitamos el envío
+    if (form.checkValidity()) {
+        btnSubmit.disabled = false;
+    } else {
+        btnSubmit.disabled = true;
+    }
+}
+
+// Escuchadores de eventos para los inputs
+[inputNombre, inputDesc, selectCat].forEach(element => {
+    // Validar cuando el usuario cambia de campo
+    element.addEventListener('blur', () => validarCampo(element));
+    // Validar mientras escribe para limpiar errores rápidamente
+    element.addEventListener('input', () => validarCampo(element));
+});
+
+// 7. Gestión del Envío y Alta del Registro (con spinner simulando proceso)
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Validación final de seguridad
+    if (!form.checkValidity()) {
+        alertaValidacion.innerHTML = `
+            <div class="alert alert-danger" role="alert">
+                <i class="bi bi-x-circle-fill me-1"></i>
+                Por favor, corrija los campos marcados antes de guardar.
+            </div>`;
+        return;
     }
 
+    // Mostrar spinner y bloquear el botón mientras se "procesa" el registro
+    spinnerSubmit.classList.remove('d-none');
+    btnSubmitText.innerHTML = 'Guardando...';
+    btnSubmit.disabled = true;
+
+    // Simulación de proceso asíncrono (ej. llamada a servidor)
+    setTimeout(() => {
+        // Crear nueva incidencia con un ID aleatorio único
+        const nuevaIncidencia = {
+            id: Math.floor(10000000 + Math.random() * 90000000),
+            nombre: inputNombre.value.trim(),
+            descripcion: inputDesc.value.trim(),
+            categoria: selectCat.value
+        };
+
+        // Agregar al arreglo, renderizar y resetear campos
+        incidencias.push(nuevaIncidencia);
+        renderListaIncidencias();
+
+        form.reset();
+
+        // Limpiar clases de validación post-envío
+        [inputNombre, inputDesc, selectCat].forEach(el => el.classList.remove('is-valid', 'is-invalid'));
+
+        // Restaurar botón
+        spinnerSubmit.classList.add('d-none');
+        btnSubmitText.innerHTML = '<i class="bi bi-plus-lg"></i> Registrar Incidencia';
+
+        alertaValidacion.innerHTML = `
+            <div class="alert alert-success" role="alert">
+                <i class="bi bi-check-circle-fill me-1"></i>
+                Incidencia guardada con éxito en la sesión local.
+            </div>`;
+
+        setTimeout(() => { alertaValidacion.innerHTML = ''; }, 4000);
+        verificarFormularioCompleto();
+    }, 900);
+});
+
+// Inicialización Automática al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    renderListaIncidencias();
+    verificarFormularioCompleto();
 });

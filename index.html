@@ -4,291 +4,428 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Monitoreo y Gestión de Seguridad Ciudadana</title>
+
+    <!-- Bootstrap 5 CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons (CDN) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Estilos propios del proyecto -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ═══════════════ HEADER ═══════════════ -->
-    <header>
-        <div class="brand">
-            <div class="brand-icon">🛡️</div>
-            <h1>Sistema de Monitoreo y Gestión<br>de Seguridad Ciudadana</h1>
-        </div>
-        <nav aria-label="Menú principal">
-            <ul>
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#quienes">Quiénes Somos</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#incidencias">Registro de Incidencias</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- ═══════════════ MAIN ═══════════════ -->
-    <main>
-
-        <!-- INICIO -->
-        <section id="inicio" aria-labelledby="inicio-heading">
-            <div class="live-badge">
-                <span class="live-dot"></span>
-                Sistema operativo · En línea
-            </div>
-            <h2 id="inicio-heading">Plataforma Integrada de Seguridad Ciudadana</h2>
-            <p>Administración de incidencias, control de personal y optimización de recursos logísticos en tiempo real para una gestión policial moderna y efectiva.</p>
-            <a href="#servicios" class="btn-primary-custom">Ver Servicios →</a>
-        </section>
-
-        <!-- QUIÉNES SOMOS -->
-        <section id="quienes" aria-labelledby="quienes-heading">
-            <div class="section-wrap">
-                <div class="quienes-grid">
-
-                    <div class="img-placeholder" role="img" aria-label="Centro de monitoreo de seguridad ciudadana">
-                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="32" cy="32" r="28" stroke="white" stroke-width="2"/>
-                            <path d="M20 32 L28 40 L44 24" stroke="#F5A623" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="32" cy="32" r="14" stroke="white" stroke-width="1.5" stroke-dasharray="4 3"/>
-                        </svg>
-                        <span>CENTRO DE MONITOREO</span>
-                    </div>
-
-                    <div class="quienes-text">
-                        <span class="section-label">Quiénes Somos</span>
-                        <h2 class="section-title" id="quienes-heading">Un sistema al servicio de la comunidad</h2>
-                        <p>El <strong>Sistema de Monitoreo y Gestión de Seguridad Ciudadana</strong> es una plataforma web desarrollada para optimizar la operación policial y fortalecer la relación entre las instituciones de seguridad y la ciudadanía. Surge como respuesta a la necesidad de contar con herramientas tecnológicas modernas que permitan registrar, gestionar y analizar incidencias de manera ágil, precisa y centralizada.</p>
-                        <p>A través de esta plataforma, el personal operativo puede reportar novedades en tiempo real, mientras que los mandos superiores disponen de tableros de control que facilitan la toma de decisiones estratégicas. El sistema integra módulos de control de asistencia, asignación de patrullajes, administración de recursos logísticos y generación de estadísticas delictivas por sector.</p>
-                        <p>Desarrollado bajo los más altos estándares de seguridad informática, garantiza la confidencialidad de la información y la trazabilidad de cada acción registrada. Nuestro objetivo es contribuir a una gestión policial más eficiente, transparente y orientada al bienestar de la comunidad.</p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- SERVICIOS -->
-        <section id="servicios" aria-labelledby="servicios-heading">
-            <div class="section-wrap">
-                <span class="section-label">Servicios</span>
-                <h2 class="section-title" id="servicios-heading">Módulos y Funcionalidades</h2>
-
-                <div class="services-grid">
-                    <article class="service-card">
-                        <div class="icon">📋</div>
-                        <h3>Gestión de Incidencias</h3>
-                        <p>Registro, seguimiento y cierre de incidentes con geolocalización y asignación automática de unidades.</p>
-                    </article>
-                    <article class="service-card">
-                        <div class="icon">👮</div>
-                        <h3>Control de Personal</h3>
-                        <p>Asistencia, turnos, patrullajes y novedades del personal operativo y administrativo.</p>
-                    </article>
-                    <article class="service-card">
-                        <div class="icon">📊</div>
-                        <h3>Estadísticas Delictivas</h3>
-                        <p>Análisis por zona, tipo de delito y período temporal para apoyar decisiones estratégicas.</p>
-                    </article>
-                    <article class="service-card">
-                        <div class="icon">🚔</div>
-                        <h3>Recursos Logísticos</h3>
-                        <p>Inventario de vehículos, armamento y equipamiento con alertas de mantenimiento.</p>
-                    </article>
-                </div>
-
-                <ul class="services-list">
-                    <li>Registro digital de partes e informes policiales</li>
-                    <li>Módulo de despacho y coordinación de unidades</li>
-                    <li>Alertas tempranas y notificaciones en tiempo real</li>
-                    <li>Panel de administración para mandos superiores</li>
-                    <li>Integración con cámaras de videovigilancia</li>
-                    <li>Generación automática de reportes en PDF</li>
-                    <li>Acceso móvil para personal en campo</li>
-                    <li>Historial de incidencias por ciudadano o dirección</li>
+    <!-- ============ NAVBAR ============ -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-navy fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#inicio">
+                <span class="brand-icon">🛡️</span>
+                <span class="brand-text">SMGSC</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+                    aria-controls="navMenu" aria-expanded="false" aria-label="Alternar navegación">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
+                    <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#quienes">Quiénes Somos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#incidencias">Incidencias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contacto">Contactos</a></li>
                 </ul>
             </div>
-        </section>
+        </div>
+    </nav>
 
-        <!-- VIDEO -->
-        <section id="video-section" aria-labelledby="video-heading">
-            <span class="section-label">Video informativo</span>
-            <h2 class="section-title" id="video-heading">Seguridad Ciudadana en la Era Digital</h2>
-            <p style="color:rgba(255,255,255,.65);max-width:560px;margin:.5rem auto 0;font-size:.95rem;">
-                Cómo las plataformas tecnológicas están transformando la gestión policial moderna.
-            </p>
-            <div class="video-wrapper">
-                <iframe
-                    src="https://www.youtube.com/embed/4w5gUxQ5rQM"
-                    title="Seguridad ciudadana y tecnología"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+    <main>
+        <!-- ============ INICIO / HERO ============ -->
+        <section id="inicio" class="hero-section text-center text-white d-flex align-items-center">
+            <div class="container">
+                <span class="badge rounded-pill bg-success-subtle text-success-emphasis live-badge mb-3">
+                    <span class="live-dot"></span> Sistema operativo · En línea
+                </span>
+                <h1 class="display-5 fw-bold">Plataforma Integrada de Seguridad Ciudadana</h1>
+                <p class="lead col-lg-8 mx-auto text-white-50">
+                    Administración de incidencias, control de personal y optimización de recursos
+                    logísticos en tiempo real para una gestión policial moderna y efectiva.
+                </p>
+                <a href="#servicios" class="btn btn-warning btn-lg fw-semibold px-4 mt-2">
+                    Ver Servicios <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
         </section>
 
-        <!-- ═══════════════ SECCIÓN DINÁMICA: REGISTRO DE INCIDENCIAS ═══════════════ -->
-        <section id="incidencias" aria-labelledby="incidencias-heading">
-            <div class="section-wrap">
-                <span class="section-label">Sección dinámica</span>
-                <h2 class="section-title" id="incidencias-heading">Registro de Incidencias en Tiempo Real</h2>
-                <p style="color:var(--muted); max-width:700px; margin-bottom:2rem;">
-                    Complete el formulario para registrar una nueva incidencia. Cada campo se valida mientras escribe
-                    y al salir de él; el botón solo registra la incidencia cuando todo el formulario es correcto.
+        <!-- ============ QUIÉNES SOMOS ============ -->
+        <section id="quienes" class="py-5">
+            <div class="container">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-5">
+                        <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTI-YXzWjrAUNEMELVYQ-YaT_vt_NsBOpvVtnZ6NXDnvOzi8pXiKq7hJ-Z5JN5VW346KBg6fiqudG93vaY"
+                             alt="Interfaz del sistema de monitoreo de seguridad ciudadana"
+                             class="img-fluid rounded-4 shadow">
+                    </div>
+                    <div class="col-lg-7">
+                        <span class="section-label">Quiénes Somos</span>
+                        <h2 class="section-title">Un sistema al servicio de la comunidad</h2>
+                        <p>El <strong>Sistema de Monitoreo y Gestión de Seguridad Ciudadana</strong> es una
+                           plataforma web desarrollada para optimizar la operación policial y fortalecer la
+                           relación entre las instituciones de seguridad y la ciudadanía. Surge como respuesta
+                           a la necesidad de contar con herramientas tecnológicas modernas que permitan
+                           registrar, gestionar y analizar incidencias de manera ágil, precisa y centralizada.</p>
+                        <p>A través de esta plataforma, el personal operativo puede reportar novedades en
+                           tiempo real, mientras que los mandos superiores disponen de tableros de control que
+                           facilitan la toma de decisiones estratégicas. El sistema integra módulos de control
+                           de asistencia, asignación de patrullajes, administración de recursos logísticos y
+                           generación de estadísticas delictivas por sector.</p>
+                        <p class="mb-0">Desarrollado bajo los más altos estándares de seguridad informática,
+                           garantiza la confidencialidad de la información y la trazabilidad de cada acción
+                           registrada.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SERVICIOS ============ -->
+        <section id="servicios" class="py-5 bg-light-section">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <span class="section-label">Servicios</span>
+                    <h2 class="section-title">Módulos y Funcionalidades</h2>
+                </div>
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5">
+                    <div class="col">
+                        <div class="card h-100 service-card text-center border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="icon mb-3"><i class="bi bi-clipboard-check"></i></div>
+                                <h3 class="h5 card-title">Gestión de Incidencias</h3>
+                                <p class="card-text text-muted small">Registro, seguimiento y cierre de
+                                   incidentes con geolocalización y asignación automática de unidades.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 service-card text-center border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="icon mb-3"><i class="bi bi-person-badge"></i></div>
+                                <h3 class="h5 card-title">Control de Personal</h3>
+                                <p class="card-text text-muted small">Asistencia, turnos, patrullajes y
+                                   novedades del personal operativo y administrativo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 service-card text-center border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="icon mb-3"><i class="bi bi-bar-chart-line"></i></div>
+                                <h3 class="h5 card-title">Estadísticas Delictivas</h3>
+                                <p class="card-text text-muted small">Análisis por zona, tipo de delito y
+                                   período temporal para apoyar decisiones estratégicas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 service-card text-center border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="icon mb-3"><i class="bi bi-truck"></i></div>
+                                <h3 class="h5 card-title">Recursos Logísticos</h3>
+                                <p class="card-text text-muted small">Inventario de vehículos, armamento y
+                                   equipamiento con alertas de mantenimiento.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-10 mx-auto">
+                        <ul class="list-group list-group-flush services-list-group shadow-sm rounded-3">
+                            <li class="list-group-item"><i class="bi bi-check2-circle text-navy me-2"></i>Registro digital de partes e informes policiales</li>
+                            <li class="list-group-item"><i class="bi bi-check2-circle text-navy me-2"></i>Módulo de despacho y coordinación de unidades</li>
+                            <li class="list-group-item"><i class="bi bi-check2-circle text-navy me-2"></i>Alertas tempranas y notificaciones en tiempo real</li>
+                            <li class="list-group-item"><i class="bi bi-check2-circle text-navy me-2"></i>Panel de administración para mandos superiores</li>
+                            <li class="list-group-item"><i class="bi bi-check2-circle text-navy me-2"></i>Integración con cámaras de videovigilancia</li>
+                            <li class="list-group-item"><i class="bi bi-check2-circle text-navy me-2"></i>Generación automática de reportes en PDF</li>
+                            <li class="list-group-item"><i class="bi bi-check2-circle text-navy me-2"></i>Acceso móvil para personal en campo</li>
+                            <li class="list-group-item"><i class="bi bi-check2-circle text-navy me-2"></i>Historial de incidencias por ciudadano o dirección</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ VIDEO ============ -->
+        <section id="video-section" class="py-5 bg-navy text-center text-white">
+            <div class="container">
+                <span class="section-label">Video informativo</span>
+                <h2 class="section-title text-white">Seguridad Ciudadana en la Era Digital</h2>
+                <p class="text-white-50 col-lg-6 mx-auto">
+                    Cómo las plataformas tecnológicas están transformando la gestión policial moderna.
                 </p>
+                <div class="ratio ratio-16x9 col-lg-8 mx-auto shadow rounded-3 overflow-hidden">
+                    <iframe
+                        src="https://www.youtube.com/embed/aj0rwVKH2d0"
+                        title="Seguridad ciudadana y tecnología"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
 
-                <div class="incidencias-grid">
+        <!-- ============ INCIDENCIAS ============ -->
+        <section id="incidencias" class="py-5">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <span class="section-label">Sección dinámica</span>
+                    <h2 class="section-title">Registro de Incidencias en Tiempo Real</h2>
+                    <p class="text-muted col-lg-8 mx-auto">
+                        Complete el formulario para registrar una nueva incidencia. Cada campo se valida
+                        mientras escribe y al salir de él; el botón solo registra la incidencia cuando todo
+                        el formulario es correcto.
+                    </p>
+                </div>
 
-                    <!-- FORMULARIO -->
-                    <div class="form-card">
-                        <h3 style="font-family:'Rajdhani',sans-serif; color:var(--navy); margin-bottom:1rem;">Nueva Incidencia</h3>
+                <div class="row g-4">
+                    <!-- Formulario -->
+                    <div class="col-lg-5">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4">
+                                <h3 class="h5 fw-bold text-navy mb-3">
+                                    <i class="bi bi-plus-circle me-1"></i> Nueva Incidencia
+                                </h3>
 
-                        <form id="formIncidencia" novalidate>
-                            <div class="mb-3">
-                                <label for="nombreIncidencia" class="form-label">Nombre de la incidencia</label>
-                                <input type="text" class="form-control" id="nombreIncidencia" placeholder="Ej. Robo a domicilio" autocomplete="off" minlength="5" required aria-describedby="nombreFeedback">
-                                <div class="invalid-feedback" id="nombreFeedback"></div>
+                                <form id="formIncidencia" novalidate>
+                                    <div class="mb-3">
+                                        <label for="nombreIncidencia" class="form-label">Nombre de la incidencia</label>
+                                        <input type="text" class="form-control" id="nombreIncidencia"
+                                               placeholder="Ej. Robo a domicilio" autocomplete="off"
+                                               minlength="5" required aria-describedby="nombreFeedback">
+                                        <div class="invalid-feedback" id="nombreFeedback">
+                                            El nombre debe tener al menos 5 caracteres.
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="descripcionIncidencia" class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="descripcionIncidencia" rows="3"
+                                                  placeholder="Detalle breve de lo ocurrido (mínimo 15 caracteres)"
+                                                  minlength="15" required aria-describedby="descripcionFeedback"></textarea>
+                                        <div class="invalid-feedback" id="descripcionFeedback">
+                                            La descripción debe tener al menos 15 caracteres.
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="categoriaIncidencia" class="form-label">Categoría</label>
+                                        <select class="form-select" id="categoriaIncidencia" required
+                                                aria-describedby="categoriaFeedback">
+                                            <option value="">Seleccione una categoría...</option>
+                                            <option value="Robo">Robo</option>
+                                            <option value="Accidente de tránsito">Accidente de tránsito</option>
+                                            <option value="Violencia">Violencia</option>
+                                            <option value="Muerte violenta">Muerte violenta</option>
+                                            <option value="Otro">Otro</option>
+                                        </select>
+                                        <div class="invalid-feedback" id="categoriaFeedback">
+                                            Por favor, seleccione una categoría válida.
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" id="btnSubmit" class="btn btn-primary-custom w-100 d-flex align-items-center justify-content-center gap-2" disabled>
+                                        <span id="spinnerSubmit" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                        <span id="btnSubmitText"><i class="bi bi-plus-lg"></i> Registrar Incidencia</span>
+                                    </button>
+
+                                    <div id="alertaValidacion" class="mt-3"></div>
+                                </form>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="descripcionIncidencia" class="form-label">Descripción</label>
-                                <textarea class="form-control" id="descripcionIncidencia" rows="3" placeholder="Detalle breve de lo ocurrido (mínimo 15 caracteres)" minlength="15" required aria-describedby="descripcionFeedback"></textarea>
-                                <div class="invalid-feedback" id="descripcionFeedback"></div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="categoriaIncidencia" class="form-label">Categoría</label>
-                                <select class="form-select" id="categoriaIncidencia" required aria-describedby="categoriaFeedback">
-                                    <option value="">Seleccione una categoría...</option>
-                                    <option value="Robo">Robo</option>
-                                    <option value="Accidente de tránsito">Accidente de tránsito</option>
-                                    <option value="Violencia">Violencia</option>
-                                    <option value="Disturbio">Disturbio</option>
-                                    <option value="Otro">Otro</option>
-                                </select>
-                                <div class="invalid-feedback" id="categoriaFeedback"></div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary-custom w-100">➕ Registrar Incidencia</button>
-
-                            <div id="alertaValidacion"></div>
-                        </form>
+                        </div>
                     </div>
 
-                    <!-- LISTADO DINÁMICO -->
-                    <div>
-                        <div class="resumen-bar">
+                    <!-- Listado -->
+                    <div class="col-lg-7">
+                        <div class="d-flex justify-content-between align-items-center bg-navy text-white rounded-3 px-3 py-2 mb-3 shadow-sm">
                             <span>Total de incidencias registradas</span>
-                            <span class="badge-total" id="totalIncidencias">0</span>
+                            <span class="badge bg-warning text-dark fs-6" id="totalIncidencias">0</span>
                         </div>
 
-                        <ul id="listaIncidencias">
-                            <li class="empty-state" id="estadoVacio">
-                                No hay incidencias registradas todavía. Use el formulario para agregar la primera.
+                        <div id="mensajeEstado"></div>
+
+                        <div class="table-responsive shadow-sm rounded-3">
+                            <table class="table table-hover align-middle mb-0 bg-white">
+                                <thead class="table-navy">
+                                    <tr>
+                                        <th scope="col">#ID</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Categoría</th>
+                                        <th scope="col" class="text-end">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaIncidencias">
+                                    <!-- filas generadas dinámicamente por script.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ MODAL: DETALLE DE INCIDENCIA ============ -->
+        <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-navy text-white">
+                        <h5 class="modal-title" id="modalDetalleLabel"><i class="bi bi-file-earmark-text me-1"></i> Detalle de la Incidencia</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">ID</dt>
+                            <dd class="col-sm-8" id="detalleId">—</dd>
+
+                            <dt class="col-sm-4">Nombre</dt>
+                            <dd class="col-sm-8" id="detalleNombre">—</dd>
+
+                            <dt class="col-sm-4">Categoría</dt>
+                            <dd class="col-sm-8"><span class="badge bg-secondary" id="detalleCategoria">—</span></dd>
+
+                            <dt class="col-sm-4">Descripción</dt>
+                            <dd class="col-sm-8" id="detalleDescripcion">—</dd>
+                        </dl>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ MODAL: CONFIRMAR ELIMINACIÓN ============ -->
+        <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="modalEliminarLabel"><i class="bi bi-exclamation-triangle me-1"></i> Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro que desea eliminar la incidencia <strong id="nombreAEliminar">—</strong>?
+                        Esta acción no se puede deshacer.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">
+                            <i class="bi bi-trash me-1"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ CONTACTO ============ -->
+        <section id="contacto" class="py-5 bg-light-section">
+            <div class="container">
+                <div class="row g-5">
+                    <div class="col-lg-7">
+                        <span class="section-label">Contacto</span>
+                        <h2 class="section-title">Comuníquese con Nosotros</h2>
+
+                        <ul class="list-unstyled mt-4">
+                            <li class="d-flex mb-4">
+                                <span class="ci-icon me-3"><i class="bi bi-envelope"></i></span>
+                                <div>
+                                    <strong class="d-block">Correo Electrónico</strong>
+                                    <a href="mailto:ca.salgadov@edu.gob.ec">ca.salgadov@edu.gob.ec</a>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4">
+                                <span class="ci-icon me-3"><i class="bi bi-telephone"></i></span>
+                                <div>
+                                    <strong class="d-block">Teléfono / Emergencias</strong>
+                                    <a href="tel:+593984567025">+593 984 567 025</a>
+                                    &nbsp;|&nbsp; <a href="tel:101">Emergencias: 101</a>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4">
+                                <span class="ci-icon me-3"><i class="bi bi-geo-alt"></i></span>
+                                <div>
+                                    <strong class="d-block">Dirección</strong>
+                                    Av. Metropolitana y Calle Alfredo San Andrés,<br>
+                                    Montecristi, Manabí, Ecuador
+                                </div>
+                            </li>
+                            <li class="d-flex">
+                                <span class="ci-icon me-3"><i class="bi bi-share"></i></span>
+                                <div>
+                                    <strong class="d-block mb-2">Redes Sociales</strong>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <a href="https://facebook.com" class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener">
+                                            <i class="bi bi-facebook"></i> Facebook
+                                        </a>
+                                        <a href="https://twitter.com" class="btn btn-sm btn-outline-dark" target="_blank" rel="noopener">
+                                            <i class="bi bi-twitter-x"></i> Twitter / X
+                                        </a>
+                                        <a href="https://youtube.com" class="btn btn-sm btn-outline-danger" target="_blank" rel="noopener">
+                                            <i class="bi bi-youtube"></i> YouTube
+                                        </a>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
 
-                </div>
-            </div>
-        </section>
+                    <div class="col-lg-5">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4">
+                                <h3 class="h5 fw-bold text-navy mb-3"><i class="bi bi-clock-history me-1"></i> Información Operativa</h3>
 
-        <!-- CONTACTO + ASIDE -->
-        <section id="contacto" aria-labelledby="contacto-heading">
-            <div class="section-wrap">
-                <div class="contact-aside-grid">
+                                <h4 class="h6 text-muted text-uppercase mt-3">Horarios de Atención</h4>
+                                <ul class="list-group list-group-flush mb-3">
+                                    <li class="list-group-item d-flex justify-content-between px-0">Lun – Vie <span class="fw-semibold">08:00 – 17:00</span></li>
+                                    <li class="list-group-item d-flex justify-content-between px-0">Sábados <span class="fw-semibold">08:00 – 13:00</span></li>
+                                    <li class="list-group-item d-flex justify-content-between px-0">Emergencias <span class="fw-semibold">24 / 7</span></li>
+                                </ul>
 
-                    <div>
-                        <span class="section-label">Contacto</span>
-                        <h2 class="section-title" id="contacto-heading">Comuníquese con Nosotros</h2>
+                                <h4 class="h6 text-muted text-uppercase">Líneas de Emergencia</h4>
+                                <ul class="list-group list-group-flush mb-3">
+                                    <li class="list-group-item d-flex justify-content-between px-0">Policía Nacional <span class="badge bg-navy">101</span></li>
+                                    <li class="list-group-item d-flex justify-content-between px-0">Bomberos <span class="badge bg-navy">102</span></li>
+                                    <li class="list-group-item d-flex justify-content-between px-0">Cruz Roja <span class="badge bg-navy">131</span></li>
+                                    <li class="list-group-item d-flex justify-content-between px-0">ECU 911 <span class="badge bg-navy">911</span></li>
+                                </ul>
 
-                        <div class="contact-items">
-
-                            <div class="contact-item">
-                                <span class="ci-icon">✉️</span>
-                                <div>
-                                    <strong>Correo Electrónico</strong>
-                                    <a href="mailto:ca.salgadov@edu.gob.ec">ca.salgadov@edu.gob.ec</a>
+                                <div class="alert alert-warning small mb-3">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                    Para reportar una emergencia activa, llame al <strong>ECU 911</strong>.
+                                    No envíe reportes de emergencias por correo electrónico.
                                 </div>
-                            </div>
 
-                            <div class="contact-item">
-                                <span class="ci-icon">📞</span>
-                                <div>
-                                    <strong>Teléfono / Emergencias</strong>
-                                    <a href="tel:+593984567025">+593 984 567 025</a>
-                                    &nbsp;|&nbsp; <a href="tel:101">Emergencias: 101</a>
-                                </div>
+                                <a href="tel:911" class="btn btn-danger w-100 btn-lg">
+                                    <i class="bi bi-telephone-fill me-1"></i> Marcar ECU 911
+                                </a>
                             </div>
-
-                            <div class="contact-item">
-                                <span class="ci-icon">📍</span>
-                                <div>
-                                    <strong>Dirección</strong>
-                                    Av. Metropolitana y Calle Alfredo San Andrés,<br>
-                                    Montecristi, Manabí, Ecuador
-                                </div>
-                            </div>
-
-                            <div class="contact-item">
-                                <span class="ci-icon">🌐</span>
-                                <div>
-                                    <strong>Redes Sociales</strong>
-                                    <div class="social-links">
-                                        <a href="https://facebook.com" class="social-link fb" target="_blank" rel="noopener">📘 Facebook</a>
-                                        <a href="https://twitter.com" class="social-link tw" target="_blank" rel="noopener">🐦 Twitter / X</a>
-                                        <a href="https://youtube.com" class="social-link yt" target="_blank" rel="noopener">▶ YouTube</a>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-
-                    <aside aria-label="Información adicional">
-                        <h3>🕐 Información Operativa</h3>
-
-                        <div class="aside-block">
-                            <h4>Horarios de Atención</h4>
-                            <ul>
-                                <li>Lun – Vie <span>08:00 – 17:00</span></li>
-                                <li>Sábados <span>08:00 – 13:00</span></li>
-                                <li>Emergencias <span>24 / 7</span></li>
-                            </ul>
-                        </div>
-
-                        <div class="aside-block">
-                            <h4>Líneas de Emergencia</h4>
-                            <ul>
-                                <li>Policía Nacional <span>101</span></li>
-                                <li>Bomberos <span>102</span></li>
-                                <li>Cruz Roja <span>131</span></li>
-                                <li>ECU 911 <span>911</span></li>
-                            </ul>
-                        </div>
-
-                        <div class="aside-block">
-                            <h4>Aviso Importante</h4>
-                            <p>Para reportar una emergencia activa, llame al <strong style="color:var(--amber)">ECU 911</strong>. No envíe reportes de emergencias por correo electrónico.</p>
-                        </div>
-
-                        <a href="tel:911" class="emergency-btn">🚨 Marcar ECU 911</a>
-                    </aside>
-
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- ═══════════════ FOOTER ═══════════════ -->
-    <footer>
-        <div class="footer-divider"></div>
-        <p>
-            <strong>Cptn. Carlos Salgado Vélez</strong><br>
-            Proyecto de Asignatura · Desarrollo Web<br>
-            Sistemas de Monitoreo y Gestión de Seguridad Ciudadana · © 2026
-        </p>
+    <!-- ============ FOOTER ============ -->
+    <footer class="bg-navy text-white-50 text-center py-4">
+        <div class="container">
+            <hr class="border-secondary">
+            <p class="mb-0">
+                <strong class="text-white">Cptn. Carlos Salgado Vélez</strong><br>
+                Proyecto de Asignatura · Desarrollo Web<br>
+                Sistemas de Monitoreo y Gestión de Seguridad Ciudadana · © 2026
+            </p>
+        </div>
     </footer>
 
-    <!-- Script externo enlazado al final del documento -->
+    <!-- Bootstrap 5 JS Bundle (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
