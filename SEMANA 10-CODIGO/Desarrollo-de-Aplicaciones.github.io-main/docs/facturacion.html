@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sistema web para el monitoreo y la gestión de seguridad ciudadana">
+    <title>FACTURACIÓN | SMGSC</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-navy fixed-top shadow-sm" aria-label="Navegación principal">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+            <span class="brand-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+            <span class="brand-text">SMGSC</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link "
+                       href="index.html">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link "
+                       href="productos.html">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link "
+                       href="clientes.html">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link "
+                       href="proveedores.html">Proveedores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="facturacion.html">Facturación</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <main>
+        
+<section class="page-header">
+    <div class="container py-5"><div class="row align-items-center g-4"><div class="col-lg-8"><span class="section-label">Módulo del sistema</span><h1 class="text-white fw-bold">Facturación</h1><p class="text-white-50 mb-0">Resumen de comprobantes emitidos por servicios y recursos tecnológicos.</p></div><div class="col-lg-4 text-lg-end"><button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalFactura"><i class="bi bi-receipt-cutoff me-1"></i>Nueva factura</button></div></div></div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-receipt"></i><div><span>Facturas emitidas</span><strong>3</strong></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-cash-stack"></i><div><span>Total facturado</span><strong>$4275.50</strong></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-hourglass-split"></i><div><span>Pagos pendientes</span><strong>1</strong></div></div></div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 p-4 d-flex flex-wrap justify-content-between align-items-center gap-3"><div><h2 class="h5 text-navy fw-bold mb-1">Comprobantes recientes</h2><p class="text-muted small mb-0">Valores de ejemplo expresados en dólares estadounidenses.</p></div><div class="input-group module-search"><span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input type="search" class="form-control" placeholder="Buscar factura" data-table-filter="tablaFacturas"></div></div>
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0" id="tablaFacturas"><thead class="table-navy"><tr><th>Número</th><th>Cliente</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead><tbody>
+                <tr><td class="fw-semibold">FAC-2026-001</td><td>Unidad Educativa Montecristi</td><td>12/08/2026</td><td>$1280.00</td><td><span class="badge text-bg-success">Pagada</span></td></tr><tr><td class="fw-semibold">FAC-2026-002</td><td>Comité Barrial Los Almendros</td><td>18/08/2026</td><td>$845.50</td><td><span class="badge text-bg-warning">Pendiente</span></td></tr><tr><td class="fw-semibold">FAC-2026-003</td><td>Mercado Municipal Central</td><td>23/08/2026</td><td>$2150.00</td><td><span class="badge text-bg-primary">Emitida</span></td></tr>
+            </tbody></table></div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modalFactura" tabindex="-1" aria-labelledby="modalFacturaLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header bg-navy text-white"><h2 class="modal-title fs-5" id="modalFacturaLabel">Nueva factura</h2><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button></div><div class="modal-body"><div class="alert alert-info mb-0"><i class="bi bi-info-circle me-2"></i>El registro permanente se habilitará cuando se conecte una base de datos.</div></div></div></div></div>
+
+    </main>
+
+    <footer class="bg-navy text-white-50 py-4">
+    <div class="container text-center">
+        <div class="footer-mark mx-auto mb-3"></div>
+        <p class="mb-1"><strong class="text-white">Cptn. Carlos Salgado Vélez</strong></p>
+        <p class="small mb-0">
+            Proyecto de Asignatura · Desarrollo Web<br>
+            Sistema de Monitoreo y Gestión de Seguridad Ciudadana · © 2026
+        </p>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/script.js"></script>
+    
+</body>
+</html>
