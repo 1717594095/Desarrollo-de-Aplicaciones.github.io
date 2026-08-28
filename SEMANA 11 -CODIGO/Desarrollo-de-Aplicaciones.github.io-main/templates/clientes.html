@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo|upper }} | SMGSC{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container py-5">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8"><span class="section-label">Módulo del sistema</span><h1 class="text-white fw-bold">Clientes</h1><p class="text-white-50 mb-0">Registro de instituciones, entidades y organizaciones comunitarias atendidas.</p></div>
+            <div class="col-lg-4 text-lg-end"><div class="d-flex flex-column flex-sm-row justify-content-lg-end gap-2"><a class="btn btn-warning" href="{{ url_for('nuevo_cliente') }}"><i class="bi bi-person-plus me-1"></i>Nuevo cliente</a><button class="btn btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#modalCliente"><i class="bi bi-info-circle me-1"></i>Ayuda</button></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-buildings"></i><div><span>Clientes registrados</span><strong>{{ clientes|length }}</strong></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-person-check"></i><div><span>Clientes activos</span><strong>{{ clientes|selectattr('estado', 'equalto', 'Activo')|list|length }}</strong></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-clipboard-data"></i><div><span>Tipos de organización</span><strong>{{ clientes|map(attribute='tipo')|unique|list|length }}</strong></div></div></div>
+        </div>
+
+        <div class="row g-4" id="tablaClientes">
+            {% for cliente in clientes %}
+            <div class="col-md-6 col-xl-4 searchable-item">
+                <article class="card client-card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3"><div class="avatar-icon"><i class="bi bi-building"></i></div><span class="badge {{ 'text-bg-success' if cliente.estado == 'Activo' else 'text-bg-warning' }}">{{ cliente.estado }}</span></div>
+                        <p class="small text-muted mb-1">{{ cliente.id }}</p><h2 class="h5 text-navy fw-bold">{{ cliente.nombre }}</h2><p class="text-muted">{{ cliente.tipo }}</p>
+                        <hr><p class="small mb-2"><i class="bi bi-person me-2 text-navy"></i>Contacto: <strong>{{ cliente.contacto }}</strong></p><p class="small mb-0"><i class="bi bi-envelope me-2 text-navy"></i>{{ cliente.email }}</p>
+                    </div>
+                </article>
+            </div>
+            {% else %}<p class="text-center text-muted">No existen clientes registrados.</p>{% endfor %}
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="modalClienteLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header bg-navy text-white"><h2 class="modal-title fs-5" id="modalClienteLabel">Registro temporal</h2><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button></div><div class="modal-body"><div class="alert alert-info mb-0"><i class="bi bi-info-circle me-2"></i>Los clientes se almacenan en una lista de Python durante la ejecución. La base de datos se incorporará en un avance posterior.</div></div></div></div></div>
+{% endblock %}

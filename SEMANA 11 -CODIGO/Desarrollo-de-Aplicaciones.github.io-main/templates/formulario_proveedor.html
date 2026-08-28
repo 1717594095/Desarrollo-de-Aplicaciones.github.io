@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "components/campo_formulario.html" import render_field %}
+
+{% block title %}{{ titulo|upper }} | SMGSC{% endblock %}
+
+{% block content %}
+<section class="form-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card form-card border-0 shadow-sm">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="form-heading mb-4">
+                            <span class="form-heading-icon"><i class="bi bi-truck"></i></span>
+                            <div>
+                                <span class="section-label">Formulario protegido</span>
+                                <h1 class="h2 text-navy fw-bold mb-1">{{ encabezado }}</h1>
+                                <p class="text-muted mb-0">Ingrese los datos del proveedor tecnológico.</p>
+                            </div>
+                        </div>
+
+                        <form method="POST" novalidate>
+                            {{ form.hidden_tag() }}
+                            {{ render_field(form.ruc) }}
+                            {{ render_field(form.empresa) }}
+                            {{ render_field(form.servicio) }}
+                            <div class="row">
+                                <div class="col-md-6">{{ render_field(form.telefono) }}</div>
+                                <div class="col-md-6">{{ render_field(form.email) }}</div>
+                            </div>
+
+                            <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
+                                {{ form.submit(class="btn btn-primary-custom px-4") }}
+                                <a href="{{ url_for('proveedores') }}" class="btn btn-outline-secondary px-4">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

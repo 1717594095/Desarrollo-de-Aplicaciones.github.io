@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo|upper }} | SMGSC{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container py-5"><div class="row align-items-center g-4"><div class="col-lg-8"><span class="section-label">Módulo del sistema</span><h1 class="text-white fw-bold">Proveedores</h1><p class="text-white-50 mb-0">Consulta de empresas responsables del suministro y mantenimiento de recursos tecnológicos.</p></div><div class="col-lg-4 text-lg-end"><div class="d-flex flex-column flex-sm-row justify-content-lg-end gap-2"><a class="btn btn-warning" href="{{ url_for('nuevo_proveedor') }}"><i class="bi bi-plus-lg me-1"></i>Nuevo proveedor</a><button class="btn btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#modalProveedor"><i class="bi bi-info-circle me-1"></i>Ayuda</button></div></div></div></div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-truck"></i><div><span>Proveedores registrados</span><strong>{{ proveedores|length }}</strong></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-star"></i><div><span>Evaluación excelente</span><strong>{{ proveedores|selectattr('evaluacion', 'equalto', 'Excelente')|list|length }}</strong></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-tools"></i><div><span>Servicios disponibles</span><strong>{{ proveedores|length }}</strong></div></div></div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 p-4 d-flex flex-wrap justify-content-between align-items-center gap-3"><div><h2 class="h5 text-navy fw-bold mb-1">Directorio de proveedores</h2><p class="text-muted small mb-0">Información de contacto y servicio principal.</p></div><div class="input-group module-search"><span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input type="search" class="form-control" placeholder="Buscar proveedor" data-table-filter="tablaProveedores"></div></div>
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0" id="tablaProveedores"><thead class="table-navy"><tr><th>RUC</th><th>Empresa</th><th>Servicio</th><th>Teléfono</th><th>Correo</th><th>Evaluación</th></tr></thead><tbody>
+                {% for proveedor in proveedores %}<tr><td class="text-muted">{{ proveedor.ruc }}</td><td class="fw-semibold">{{ proveedor.empresa }}</td><td>{{ proveedor.servicio }}</td><td>{{ proveedor.telefono }}</td><td>{{ proveedor.email }}</td><td><span class="badge text-bg-primary">{{ proveedor.evaluacion }}</span></td></tr>{% else %}<tr><td colspan="6" class="text-center py-4 text-muted">No existen proveedores registrados.</td></tr>{% endfor %}
+            </tbody></table></div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modalProveedor" tabindex="-1" aria-labelledby="modalProveedorLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header bg-navy text-white"><h2 class="modal-title fs-5" id="modalProveedorLabel">Registro temporal</h2><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button></div><div class="modal-body"><div class="alert alert-info mb-0"><i class="bi bi-info-circle me-2"></i>Los proveedores válidos se agregan temporalmente a una lista de Python. No existe conexión a base de datos en esta etapa.</div></div></div></div></div>
+{% endblock %}

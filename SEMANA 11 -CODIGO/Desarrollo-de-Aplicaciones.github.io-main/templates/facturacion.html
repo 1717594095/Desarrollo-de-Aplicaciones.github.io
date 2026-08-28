@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo|upper }} | SMGSC{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container py-5"><div class="row align-items-center g-4"><div class="col-lg-8"><span class="section-label">Módulo del sistema</span><h1 class="text-white fw-bold">Facturación</h1><p class="text-white-50 mb-0">Resumen de comprobantes emitidos por servicios y recursos tecnológicos.</p></div><div class="col-lg-4 text-lg-end"><div class="d-flex flex-column flex-sm-row justify-content-lg-end gap-2"><a class="btn btn-warning" href="{{ url_for('nueva_factura') }}"><i class="bi bi-receipt-cutoff me-1"></i>Nueva factura</a><button class="btn btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#modalFactura"><i class="bi bi-info-circle me-1"></i>Ayuda</button></div></div></div></div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-receipt"></i><div><span>Facturas emitidas</span><strong>{{ facturas|length }}</strong></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-cash-stack"></i><div><span>Total facturado</span><strong>${{ '%.2f'|format(total_facturado) }}</strong></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="summary-card"><i class="bi bi-hourglass-split"></i><div><span>Pagos pendientes</span><strong>{{ facturas|selectattr('estado', 'equalto', 'Pendiente')|list|length }}</strong></div></div></div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 p-4 d-flex flex-wrap justify-content-between align-items-center gap-3"><div><h2 class="h5 text-navy fw-bold mb-1">Comprobantes recientes</h2><p class="text-muted small mb-0">Valores de ejemplo expresados en dólares estadounidenses.</p></div><div class="input-group module-search"><span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input type="search" class="form-control" placeholder="Buscar factura" data-table-filter="tablaFacturas"></div></div>
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0" id="tablaFacturas"><thead class="table-navy"><tr><th>Número</th><th>Cliente</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead><tbody>
+                {% for factura in facturas %}<tr><td class="fw-semibold">{{ factura.numero }}</td><td>{{ factura.cliente }}</td><td>{{ factura.fecha }}</td><td>${{ '%.2f'|format(factura.total) }}</td><td><span class="badge {% if factura.estado == 'Pagada' %}text-bg-success{% elif factura.estado == 'Pendiente' %}text-bg-warning{% else %}text-bg-primary{% endif %}">{{ factura.estado }}</span></td></tr>{% else %}<tr><td colspan="5" class="text-center py-4 text-muted">No existen facturas registradas.</td></tr>{% endfor %}
+            </tbody></table></div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modalFactura" tabindex="-1" aria-labelledby="modalFacturaLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header bg-navy text-white"><h2 class="modal-title fs-5" id="modalFacturaLabel">Registro temporal</h2><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button></div><div class="modal-body"><div class="alert alert-info mb-0"><i class="bi bi-info-circle me-2"></i>Las facturas se conservan únicamente mientras la aplicación permanece en ejecución. La persistencia se añadirá posteriormente.</div></div></div></div></div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo|upper }} | SMGSC{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container py-5">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <span class="section-label">Módulo del sistema</span>
+                <h1 class="text-white fw-bold">Productos y recursos</h1>
+                <p class="text-white-50 mb-0">Control visual de equipos tecnológicos disponibles para las operaciones de seguridad.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="d-flex flex-column flex-sm-row justify-content-lg-end gap-2">
+                    <a class="btn btn-warning" href="{{ url_for('nuevo_producto') }}">
+                        <i class="bi bi-plus-lg me-1"></i>Nuevo producto
+                    </a>
+                    <button class="btn btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#modalProducto">
+                        <i class="bi bi-info-circle me-1"></i>Ayuda
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-lg-4">
+                <div class="summary-card"><i class="bi bi-boxes"></i><div><span>Productos registrados</span><strong>{{ productos|length }}</strong></div></div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="summary-card"><i class="bi bi-check-circle"></i><div><span>Unidades disponibles</span><strong>{{ productos|sum(attribute='stock') }}</strong></div></div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="summary-card"><i class="bi bi-exclamation-triangle"></i><div><span>Alertas de inventario</span><strong>{{ productos|selectattr('estado', 'equalto', 'Stock bajo')|list|length }}</strong></div></div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 p-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div><h2 class="h5 text-navy fw-bold mb-1">Inventario actual</h2><p class="text-muted small mb-0">Datos de ejemplo para demostrar el módulo.</p></div>
+                <div class="input-group module-search"><span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input type="search" class="form-control" placeholder="Buscar producto" data-table-filter="tablaProductos"></div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="tablaProductos">
+                    <thead class="table-navy"><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Stock</th><th>Estado</th></tr></thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td class="text-muted">{{ producto.codigo }}</td>
+                            <td class="fw-semibold">{{ producto.nombre }}</td>
+                            <td>{{ producto.categoria|upper }}</td>
+                            <td>{{ producto.stock }}</td>
+                            <td>
+                                {% if producto.stock > 0 %}
+                                    {% if producto.stock <= 5 %}
+                                    <span class="badge text-bg-warning">Stock bajo</span>
+                                    {% else %}
+                                    <span class="badge text-bg-success">Disponible</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="badge text-bg-danger">Agotado</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" class="text-center py-4 text-muted">No existen productos registrados.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header bg-navy text-white"><h2 class="modal-title fs-5" id="modalProductoLabel">Registro temporal</h2><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button></div><div class="modal-body"><div class="alert alert-info mb-0"><i class="bi bi-info-circle me-2"></i>Los productos registrados se mantienen temporalmente mientras la aplicación está en ejecución. En esta semana todavía no se utiliza una base de datos.</div></div></div></div>
+</div>
+{% endblock %}
